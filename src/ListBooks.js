@@ -2,10 +2,34 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import BookShelf from './BookShelf'
+import { camelcaseToRegularForm } from './utils'
 
 
 class ListBooks extends Component {
+
+  state = {
+    shelfs: {}
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const shelfs = nextProps.books.reduce((books, book) => {
+      if (books[book.shelf] === undefined) {
+        books[book.shelf] = []
+      }
+      books[book.shelf].push(book)
+      return books
+    }, {})
+    this.setState({shelfs})
+  }
+
   render() {
+    const shelfs = Object.keys(this.state.shelfs).map((key) => (
+      <BookShelf
+        key={ key }
+        books={ this.state.shelfs[key] }
+        name={ camelcaseToRegularForm(key) } />
+    ))
+
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -13,9 +37,7 @@ class ListBooks extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <BookShelf name="Currently Reading"/>
-            <BookShelf name="Want to Read" />
-            <BookShelf name="Read" />
+            { shelfs }
           </div>
         </div>
         <div className="open-search">
