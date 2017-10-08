@@ -26,8 +26,11 @@ class ListBooks extends Component {
     const shelfs = Object.keys(this.state.shelfs).map((key) => (
       <BookShelf
         key={ key }
+        id={ key }
         books={ this.state.shelfs[key] }
-        name={ camelcaseToRegularForm(key) } />
+        name={ camelcaseToRegularForm(key) }
+        shelfs={ Object.keys(this.state.shelfs) }
+      />
     ))
 
     return (

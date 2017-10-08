@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react'
+import { camelcaseToRegularForm } from './utils'
 
 
 class Book extends Component {
@@ -11,16 +12,20 @@ class Book extends Component {
       backgroundImage: `url("${this.props.cover}")`
     }
 
+    const shelfOptions = this.props.shelfs.map((shelfName) => (
+      <option
+        key={ shelfName }
+        value={ shelfName }>{ camelcaseToRegularForm(shelfName) }</option>
+    ))
+
     return (
       <div className="book">
         <div className="book-top">
           <div className="book-cover" style={style}></div>
           <div className="book-shelf-changer">
-            <select>
+            <select defaultValue={ this.props.shelf }>
               <option value="none" disabled>Move to...</option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
+              { shelfOptions }
               <option value="none">None</option>
             </select>
           </div>
